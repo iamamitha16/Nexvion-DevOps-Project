@@ -1,3 +1,4 @@
+
 name: Nexvion Docker CI
 
 on:
@@ -29,3 +30,13 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t nexvion-website:ci .
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: nexvion-website:ci
+          format: table
+          vuln-type: os,library
+          severity: CRITICAL,HIGH,MEDIUM
+          exit-code: '0'
+
