@@ -104,10 +104,10 @@ docker pull amithasri16/nexvion-website:1.0
 Run the published image:
 
 ```bash
-docker run -d --name nexvion-hub-test -p 127.0.0.1:8091:80 amithasri16/nexvion-website:1.0
+docker run -d --name nexvion-hub-test -p 127.0.0.1:8090:80 amithasri16/nexvion-website:1.0
 ```
 
-Access the website at http://localhost:8091.
+Access the website at http://localhost:8090.
 
 The published image was pulled from Docker Hub and started successfully in a separate container.
 
