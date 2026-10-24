@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexvion-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nexvion
+  template:
+    metadata:
+      labels:
+        app: nexvion
+    spec:
+      containers:
+        - name: nexvion
+          image: amithasri16/nexvion-website:1.0
+          ports:
+            - containerPort: 80
