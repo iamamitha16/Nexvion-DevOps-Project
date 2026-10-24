@@ -28,6 +28,7 @@ This project demonstrates how to containerize a website using Docker and Nginx, 
 
 ## 4. Project Architecture
 
+```text
 Developer
    |
    v
@@ -47,6 +48,7 @@ Run Container Using Docker Compose
    |
    v
 Nginx Serves the Website
+```
 
 ## 5. Docker Implementation
 
