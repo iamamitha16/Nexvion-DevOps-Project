@@ -1,0 +1,31 @@
+name: Nexvion Docker CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Check required website files
+        run: |
+          test -f index.html
+          test -f products.html
+          test -f payment.html
+          test -f style.css
+          test -f products.css
+          test -f payment.css
+          test -f script.js
+          test -f payment.js
+          test -f logo.png
+
+      - name: Build Docker image
+        run: docker build -t nexvion-website:ci .
