@@ -1,173 +1,413 @@
-# Nexvion - DevOps Internship Project
+# Nexvion – DevOps Project
 
 ## 1. Project Overview:
 
-Nexvion is a static e-commerce demonstration website built using HTML, CSS, and JavaScript.
+Nexvion is a frontend e-commerce demo website containerized using Docker and Nginx. This project demonstrates a DevOps workflow using Git, GitHub, Docker, Docker Compose, GitHub Actions, Trivy, Docker Hub, Kubernetes, and Minikube.
 
-This project demonstrates how to containerize a website using Docker and Nginx, run it using Docker Compose, and automate file validation and Docker image builds using GitHub Actions.
+The project includes automated Docker image building, container image security scanning, Docker Hub image publishing, Kubernetes deployment, service exposure, and replica scaling.
 
-## 2. Technologies Used:
+**GitHub Repository:**  
+https://github.com/iamamitha16/Nexvion-DevOps-Project
 
-- Trivy (Docker image vulnerability scanning)
-- HTML, CSS, and JavaScript
-- Git and GitHub
-- Docker
-- Nginx
-- Docker Compose
-- GitHub Actions
+**Docker Hub Repository:**  
+https://hub.docker.com/r/amithasri16/nexvion-website
 
-## 3. Website Features:
+## 2. Project Objectives:
 
-- Product catalogue with 12 products
-- Product search, sorting, and category filters
-- Price and stock filters
-- Shopping cart with quantity controls
-- Demo registration and login
-- Cart and account data stored using browser localStorage
-- Checkout and order confirmation
-- Payment form validation and cash-on-delivery option
+- Containerize the Nexvion website using Docker.
+- Serve the website using Nginx.
+- Manage containers using Docker Compose.
+- Automate Docker image building with GitHub Actions.
+- Scan the Docker image using Trivy.
+- Publish and pull the Docker image from Docker Hub.
+- Deploy the application to a local Kubernetes cluster using Minikube.
+- Expose the application through a Kubernetes Service.
+- Scale the deployment from two replicas to three replicas.
+
+## 3. Technologies Used:
+
+| Technology | Purpose |
+|---|---|
+| HTML | Website structure |
+| CSS | Website styling |
+| JavaScript | Frontend functionality |
+| Git | Version control |
+| GitHub | Source code hosting |
+| Docker | Containerization |
+| Docker Compose | Container management |
+| Nginx | Static website server |
+| GitHub Actions | CI workflow automation |
+| Trivy | Container image vulnerability scanning |
+| Docker Hub | Docker image registry |
+| Kubernetes | Container orchestration |
+| Minikube | Local Kubernetes cluster |
+| kubectl | Kubernetes command-line management |
 
 ## 4. Project Architecture:
 
 ```text
 Developer
-   |
-   v
+    |
+    v
 Git and GitHub
-   |
-   v
+    |
+    v
 GitHub Actions CI Workflow
-   |
-   v
-Validate Required Website Files
-   |
-   v
-Build Docker Image
-   |
-   v
-Run Container Using Docker Compose
-   |
-   v
-Nginx Serves the Website
+    |
+    +--> Validate Website Files
+    |
+    +--> Build Docker Image
+    |
+    +--> Scan Image Using Trivy
+    |
+    v
+Docker Hub
+    |
+    v
+Kubernetes / Minikube
+    |
+    v
+Nexvion Deployment
+    |
+    +--> Replica Pod 1
+    +--> Replica Pod 2
+    +--> Replica Pod 3 (after scaling)
+    |
+    v
+Kubernetes NodePort Service
+    |
+    v
+Nexvion Website
 ```
 
-## 5. Docker Implementation:
+## 5. Project Structure:
 
-The Dockerfile uses the lightweight Nginx Alpine image to serve the static website.
+```text
+Nexvion/
+├── .github/
+│   └── workflows/
+│       └── docker-build.yml
+├── Dockerfile
+├── .dockerignore
+├── docker-compose.yml
+├── deployment.yaml
+├── README.md
+├── README.txt
+├── index.html
+├── products.html
+├── payment.html
+├── style.css
+├── products.css
+├── payment.css
+├── script.js
+├── payment.js
+└── logo.png
+```
 
-The website HTML, CSS, JavaScript, and logo files are copied into the Nginx web root.
+## 6. Docker Containerization:
+
+The Nexvion website is packaged into a Docker image. Nginx serves the static website files inside the container.
 
 ### Build the Docker image
+
+Run the following command from the project directory:
 
 ```bash
 docker build -t nexvion-website:1.0 .
 ```
 
-### Run with Docker Compose
+### Run the local Docker image
+
+```bash
+docker run -d --name nexvion-test -p 8090:80 nexvion-website:1.0
+```
+
+Open the website in your browser:
+
+http://localhost:8090
+
+**Port mapping:** Host port `8090` maps to container port `80`.
+
+### Verify the container
+
+```bash
+docker ps
+```
+
+### Docker Compose
+
+Start the website using Docker Compose:
 
 ```bash
 docker compose up -d --build
 ```
 
-### Check the running container
+Check the Compose service:
 
 ```bash
 docker compose ps
 ```
 
-### Access the website
-
-Open the following URL in your browser:
+Open the website:
 
 http://localhost:8090
 
-### Stop the application
+Stop the Compose application when needed:
 
 ```bash
 docker compose down
 ```
 
-### Published Docker Image:
+**Note:** If the Nexvion container is already using port `8090`, use the existing container instead of starting another container with the same port.
 
-The Nexvion Docker image is published on Docker Hub.
+## 7. Docker Hub Image Publishing:
 
-**Image:** `amithasri16/nexvion-website:1.0`
+The Docker image was published to Docker Hub.
 
-**Docker Hub Repository:** https://hub.docker.com/r/amithasri16/nexvion-website
+**Image name:** `amithasri16/nexvion-website:1.0`
 
-Pull the image:
+**Docker Hub URL:**  
+https://hub.docker.com/r/amithasri16/nexvion-website
+
+### Pull the published image
 
 ```bash
 docker pull amithasri16/nexvion-website:1.0
 ```
 
-Run the published image:
+### Run the published image on port 8090
+
+If port `8090` is free, run:
 
 ```bash
-docker run -d --name nexvion-hub-test -p 127.0.0.1:8090:80 amithasri16/nexvion-website:1.0
+docker run -d --name nexvion-hub-test -p 8090:80 amithasri16/nexvion-website:1.0
 ```
 
-Access the website at http://localhost:8090.
+Open:
 
-The published image was pulled from Docker Hub and started successfully in a separate container.
+http://localhost:8090
 
+Verify the running container:
 
-## 6. Continuous Integration with GitHub Actions:
+```bash
+docker ps
+```
 
-Workflow file:
+The host port `8090` forwards traffic to port `80` inside the container, where Nginx serves the website.
+
+## 8. GitHub Actions CI Pipeline:
+
+The GitHub Actions workflow is stored in:
 
 `.github/workflows/docker-build.yml`
 
-The workflow runs when changes are pushed to the main branch, when a pull request targets main, or when the workflow is started manually.
+The workflow runs when changes are pushed to or a pull request targets the `main` branch. It can also be started manually.
 
-The workflow performs these tasks:
+### Pipeline stages
 
-1. Checks out the repository.
-2. Verifies that the required website files exist.
-3. Builds the Docker image in the GitHub Actions runner.
+1. Check out the repository source code.
+2. Verify that the required website files exist.
+3. Build the Docker image.
+4. Scan the image using Trivy.
 
-The workflow was executed successfully on the main branch.
+### Required website file validation
 
-### Docker Image Security Scanning
+The workflow checks for the presence of the main HTML, CSS, JavaScript, and image files before building the Docker image.
 
-The GitHub Actions workflow uses Trivy to scan the built Docker image for known vulnerabilities.
+### Docker image build
 
-The scan checks operating system packages and application libraries and reports CRITICAL, HIGH, and MEDIUM severity findings.
+GitHub Actions builds the Docker image to verify that the application can be packaged successfully.
 
-The workflow was tested successfully in GitHub Actions. The scan is configured to report findings without failing the pipeline solely because vulnerabilities are detected.
+### Trivy security scanning
 
-## 7. Testing and Verification:
+Trivy scans the image for operating-system package and library vulnerabilities.
 
-The following checks were completed:
+The workflow is configured to report CRITICAL, HIGH, and MEDIUM severity findings.
 
-- Completed a Trivy Docker image security scan in GitHub Actions.
-- Verified that the website opens in a browser.
-- Tested the product catalogue and checkout pages.
-- Built the Docker image successfully.
-- Started the website using Docker Compose.
-- Verified the running container and port mapping.
-- Confirmed that the GitHub Actions CI workflow passed.
+The current setting `exit-code: '0'` means detected vulnerabilities alone do not cause the workflow to fail. A successful workflow run does not prove that the image is free of vulnerabilities.
 
-## 8. Project Limitations:
+## 9. Kubernetes Deployment Using Minikube:
 
-This is a frontend demonstration project. Login, registration, and payment interactions are demo functionality using browser-side storage and validation.
+Nexvion is deployed locally to Kubernetes using Minikube and the Docker Hub image.
 
-It does not include a production authentication backend, database-backed order processing, or a real payment gateway. It should not be used to collect real payment details.
+**Docker Hub image:**
 
-## 9. Future Enhancements:
+`amithasri16/nexvion-website:1.0`
 
-- Add automated application tests.
-- Enforce security thresholds for critical vulnerabilities.
-- Publish the Docker image to a container registry.
-- Deploy the application to Kubernetes.
-- Add monitoring and centralized logging.
+### 9.1 Start Minikube:
 
-## 10. Repository:
+Ensure Docker Desktop is running, then execute:
 
-GitHub repository:
+```bash
+minikube start --driver=docker
+```
 
-https://github.com/iamamitha16/Nexvion-DevOps-Project
+### 9.2 Verify the Kubernetes cluster:
 
-## Conclusion:
+Check the node:
 
-This project provided hands-on practice with Docker containerization, Nginx, Docker Compose, Git, GitHub, and a GitHub Actions CI workflow for a static e-commerce website.
+```bash
+kubectl get nodes
+```
+
+Check all pods:
+
+```bash
+kubectl get pods -A
+```
+
+The Minikube node should display `Ready`.
+
+### 9.3 Kubernetes deployment configuration:
+
+The Kubernetes configuration is stored in:
+
+`deployment.yaml`
+
+The deployment configuration defines:
+
+- Deployment name: `nexvion-deployment`
+- Container image: `amithasri16/nexvion-website:1.0`
+- Container port: `80`
+- Initial replicas: `2`
+
+Apply the configuration:
+
+```bash
+kubectl apply -f deployment.yaml
+```
+
+### 9.4 Verify the deployment:
+
+```bash
+kubectl get deployments
+```
+
+Check the application pods:
+
+```bash
+kubectl get pods
+```
+
+The initial deployment was verified with two replicas in `Running` and ready status.
+
+### 9.5 Scale the application:
+
+Increase the number of replicas from two to three:
+
+```bash
+kubectl scale deployment nexvion-deployment --replicas=3
+```
+
+Verify the deployment:
+
+```bash
+kubectl get deployments
+```
+
+Verify the pods:
+
+```bash
+kubectl get pods
+```
+
+The deployment was verified with three ready replicas.
+
+**Purpose of scaling:** Kubernetes maintains the requested number of application replicas, helping distribute traffic across available pods and improving application availability.
+
+## 10. Kubernetes Service and Website Access:
+
+A Kubernetes NodePort Service was created to expose the Nexvion deployment.
+
+### Create the Service
+
+```bash
+kubectl expose deployment nexvion-deployment --type=NodePort --port=80
+```
+
+### Verify the Service
+
+```bash
+kubectl get services
+```
+
+The Service was created with a dynamically assigned NodePort.
+
+### Open the Nexvion website
+
+Run:
+
+```bash
+minikube service nexvion-deployment
+```
+
+Minikube displays a local URL and may open the default browser automatically.
+
+Keep the terminal running while using the local service tunnel. The URL may use a temporary localhost port and can change when the tunnel is restarted.
+
+The Nexvion website was opened successfully through the Minikube Service URL.
+
+**Important:** Port `8090` is used for the local Docker website. The Kubernetes website is accessed through the URL provided by `minikube service nexvion-deployment`; these are separate access methods.
+
+## 11. Useful Kubernetes Commands:
+
+| Command | Purpose |
+|---|---|
+| `kubectl get nodes` | View cluster nodes |
+| `kubectl get pods` | View application pods |
+| `kubectl get pods -A` | View pods across all namespaces |
+| `kubectl get deployments` | View deployments and replica status |
+| `kubectl get services` | View Kubernetes Services |
+| `kubectl describe deployment nexvion-deployment` | Inspect deployment details |
+| `kubectl logs deployment/nexvion-deployment` | View application container logs |
+| `kubectl scale deployment nexvion-deployment --replicas=3` | Scale the deployment to three replicas |
+
+## 12. Testing and Verification:
+
+The following checks were completed during the project:
+
+- Built the Nexvion Docker image successfully.
+- Ran the website using Docker.
+- Verified local Docker access through port `8090`.
+- Published the image to Docker Hub.
+- Pulled the published Docker Hub image.
+- Executed the GitHub Actions Docker build and Trivy scanning workflow successfully.
+- Started the Minikube cluster.
+- Verified that the Kubernetes node was `Ready`.
+- Deployed Nexvion with two replicas.
+- Verified that both application pods were `Running` and ready.
+- Created a Kubernetes NodePort Service.
+- Opened the website through the Minikube service URL.
+- Scaled the deployment to three replicas.
+- Verified that all three replicas were ready.
+
+## 13. Project Limitations:
+
+Nexvion is a frontend e-commerce demonstration website.
+
+Login, registration, shopping cart, and checkout functionality are implemented on the client side. The project does not include a production authentication backend, database-backed order processing, or a real payment gateway.
+
+Do not use this demo to collect real passwords or payment details.
+
+The current Trivy workflow reports vulnerability findings but does not fail solely because vulnerabilities are detected.
+
+The Kubernetes deployment is local to Minikube and is not a production cloud deployment.
+
+## 14. Future Enhancements:
+
+- Add automated application tests to the CI pipeline.
+- Configure the pipeline to fail when selected critical vulnerabilities are found.
+- Automate Docker image publishing through GitHub Actions.
+- Add Kubernetes readiness and liveness probes.
+- Configure CPU and memory requests and limits.
+- Deploy the application to a managed Kubernetes service.
+- Add monitoring, logging, and application metrics.
+- Introduce a backend and database for a production-style application.
+
+## 15. Conclusion:
+
+This project demonstrates a DevOps workflow for the Nexvion e-commerce demo website using Git, GitHub, Docker, Nginx, Docker Compose, GitHub Actions, Trivy, Docker Hub, Kubernetes, and Minikube.
+
+The project covers containerization, automated image building, security scanning, image publishing, Kubernetes deployment, Service exposure, and scaling an application from two replicas to three.
+
+It provides practical experience with important DevOps tools and workflows.
