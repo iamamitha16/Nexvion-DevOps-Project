@@ -1,13 +1,14 @@
 # Nexvion - DevOps Internship Project
 
-## 1. Project Overview
+## 1. Project Overview:
 
 Nexvion is a static e-commerce demonstration website built using HTML, CSS, and JavaScript.
 
 This project demonstrates how to containerize a website using Docker and Nginx, run it using Docker Compose, and automate file validation and Docker image builds using GitHub Actions.
 
-## 2. Technologies Used
+## 2. Technologies Used:
 
+- Trivy (Docker image vulnerability scanning)
 - HTML, CSS, and JavaScript
 - Git and GitHub
 - Docker
@@ -15,7 +16,7 @@ This project demonstrates how to containerize a website using Docker and Nginx, 
 - Docker Compose
 - GitHub Actions
 
-## 3. Website Features
+## 3. Website Features:
 
 - Product catalogue with 12 products
 - Product search, sorting, and category filters
@@ -26,7 +27,7 @@ This project demonstrates how to containerize a website using Docker and Nginx, 
 - Checkout and order confirmation
 - Payment form validation and cash-on-delivery option
 
-## 4. Project Architecture
+## 4. Project Architecture:
 
 ```text
 Developer
@@ -50,7 +51,7 @@ Run Container Using Docker Compose
 Nginx Serves the Website
 ```
 
-## 5. Docker Implementation
+## 5. Docker Implementation:
 
 The Dockerfile uses the lightweight Nginx Alpine image to serve the static website.
 
@@ -86,7 +87,7 @@ http://localhost:8090
 docker compose down
 ```
 
-## 6. Continuous Integration with GitHub Actions
+## 6. Continuous Integration with GitHub Actions:
 
 Workflow file:
 
@@ -102,10 +103,19 @@ The workflow performs these tasks:
 
 The workflow was executed successfully on the main branch.
 
-## 7. Testing and Verification
+### Docker Image Security Scanning
+
+The GitHub Actions workflow uses Trivy to scan the built Docker image for known vulnerabilities.
+
+The scan checks operating system packages and application libraries and reports CRITICAL, HIGH, and MEDIUM severity findings.
+
+The workflow was tested successfully in GitHub Actions. The scan is configured to report findings without failing the pipeline solely because vulnerabilities are detected.
+
+## 7. Testing and Verification:
 
 The following checks were completed:
 
+- Completed a Trivy Docker image security scan in GitHub Actions.
 - Verified that the website opens in a browser.
 - Tested the product catalogue and checkout pages.
 - Built the Docker image successfully.
@@ -113,26 +123,26 @@ The following checks were completed:
 - Verified the running container and port mapping.
 - Confirmed that the GitHub Actions CI workflow passed.
 
-## 8. Project Limitations
+## 8. Project Limitations:
 
 This is a frontend demonstration project. Login, registration, and payment interactions are demo functionality using browser-side storage and validation.
 
 It does not include a production authentication backend, database-backed order processing, or a real payment gateway. It should not be used to collect real payment details.
 
-## 9. Future Enhancements
+## 9. Future Enhancements:
 
 - Add automated application tests.
-- Add container image vulnerability scanning.
+- Enforce security thresholds for critical vulnerabilities.
 - Publish the Docker image to a container registry.
 - Deploy the application to Kubernetes.
 - Add monitoring and centralized logging.
 
-## 10. Repository
+## 10. Repository:
 
 GitHub repository:
 
 https://github.com/iamamitha16/Nexvion-DevOps-Project
 
-## Conclusion
+## Conclusion:
 
 This project provided hands-on practice with Docker containerization, Nginx, Docker Compose, Git, GitHub, and a GitHub Actions CI workflow for a static e-commerce website.
