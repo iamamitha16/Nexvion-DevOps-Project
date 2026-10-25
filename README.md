@@ -616,7 +616,6 @@ This screenshot shows the Kubernetes Service configured to expose the Nexvion ap
 
 ![Kubernetes Service](screenshots/kubernetes-service.png)
 
-
 ### 4. GitHub Actions CI Workflow
 
 This screenshot shows a successful GitHub Actions workflow run for the Nexvion DevOps project. The workflow was triggered by a push to the `main` branch, and the build job completed successfully.
@@ -635,8 +634,23 @@ This screenshot shows Docker Desktop with the Nexvion test container running and
 
 ![Docker Desktop Containers](screenshots/docker-desktop-containers.png)
 
+### 7. Trivy Docker Image Vulnerability Scan:
 
+This screenshot shows the Trivy vulnerability scanning step running as part of the GitHub Actions CI workflow. The scan step completed successfully as part of the overall build job.
 
+![Trivy Scan Step](screenshots/trivy-scan-results.png)
+
+### 8. Kubernetes Deployment and Rollout History:
+
+This screenshot shows the Nexvion Kubernetes Deployment with three replicas ready and the rollout revision history. The current application image is `amithasri16/nexvion-website:1.0` following the rollback test.
+
+![Kubernetes Rollout History](screenshots/kubernetes-rollout-history.png)
+
+### 9. Kubernetes Rollback:
+
+A Kubernetes rollback was performed to revert the Nexvion Deployment to its previous revision. The rollout status and replica readiness were checked after the operation.
+
+![Kubernetes Rollback](screenshots/kubernetes-rollback.png)
 
 
 ## 16. Project Limitations:
