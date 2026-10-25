@@ -61,9 +61,10 @@ Nexvion is a frontend e-commerce demo website containerized with Docker and serv
 | Minikube | Local Kubernetes cluster |
 | kubectl | Kubernetes command-line management |
 
-## 4. Project Architecture:
 
+## 4. Project Architecture
 
+```text
 Developer
    |
    v
@@ -96,6 +97,7 @@ NodePort Service
    |
    v
 Nexvion Website
+```
 
 
 ## Project Workflow
@@ -596,8 +598,6 @@ The following screenshots document the implementation and verification of the Ne
 | 10 | Rolling Update | Successful rollout to image version 1.1 |
 | 11 | Rollback | Successful rollback to image version 1.0 |
 
-*Add your actual screenshots below this table or link to screenshots stored in a repository folder.*
-
 ### 1. Docker Container Running:
 
 This screenshot shows the Nexvion Docker container and its status.
@@ -663,7 +663,6 @@ Kubernetes self-healing was tested by deleting one application Pod. The Deployme
 The Nexvion e-commerce demo website is served using Nginx inside a Docker container. The screenshot shows the website successfully displayed in a browser at `http://localhost:8090`.
 
 ![Nexvion Website Running](screenshots/nexvion-website.png)
-
 
 
 ## 16. Project Limitations:
