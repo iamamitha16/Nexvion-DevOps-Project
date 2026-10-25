@@ -623,6 +623,17 @@ This screenshot shows a successful GitHub Actions workflow run for the Nexvion D
 
 ![GitHub Actions CI Workflow Success](screenshots/github-actions-success.png)
 
+### 5. Docker Images and Version Tags:
+
+This screenshot shows the Nexvion Docker images available locally in Docker Desktop, including version tags 1.0 and 1.1. The two version tags were used to demonstrate Kubernetes rolling update and rollback operations.
+
+![Nexvion Docker Images](screenshots/docker-images-local.png)
+
+### 6. Docker Desktop Containers:
+
+This screenshot shows Docker Desktop with the Nexvion test container running and the Minikube container active. The Nexvion container maps host port 8091 to container port 80.
+
+![Docker Desktop Containers](screenshots/docker-desktop-containers.png)
 
 
 
