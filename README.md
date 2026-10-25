@@ -352,6 +352,31 @@ To check pod readiness and status, run:
 kubectl get pods
 ```
 
+
+### Kubernetes Self-Healing Verification
+
+Kubernetes self-healing was tested by manually deleting one pod managed by the `nexvion-deployment` Deployment.
+
+Command used:
+
+```bash
+kubectl delete pod nexvion-deployment-88b7bcb76-55r4v
+```
+
+Kubernetes automatically created a replacement pod to maintain the desired replica count of three.
+
+The replacement pod initially showed `0/1` while starting and subsequently reached `1/1 Running`. The other two pods continued running.
+
+This test demonstrated that the Kubernetes Deployment controller maintains the desired number of replicas when a managed pod is deleted.
+
+Verification commands:
+
+```bash
+kubectl get deployments
+kubectl get pods
+```
+
+
 ## 10. Kubernetes Service and Website Access:
 
 A Kubernetes NodePort Service was created to expose the Nexvion deployment.
