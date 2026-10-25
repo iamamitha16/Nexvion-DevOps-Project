@@ -617,6 +617,13 @@ This screenshot shows the Kubernetes Service configured to expose the Nexvion ap
 ![Kubernetes Service](screenshots/kubernetes-service.png)
 
 
+### 4. GitHub Actions CI Workflow
+
+This screenshot shows a successful GitHub Actions workflow run for the Nexvion DevOps project. The workflow was triggered by a push to the `main` branch, and the build job completed successfully.
+
+![GitHub Actions CI Workflow Success](screenshots/github-actions-success.png)
+
+
 
 
 
