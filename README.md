@@ -621,7 +621,7 @@ This screenshot shows Docker Desktop with the Nexvion test container running and
 ![Docker Desktop Containers](screenshots/docker-desktop-containers.png)
 
 
-### Docker Hub Repository and Image Tags:
+### 7. Docker Hub Repository and Image Tags:
 
 This screenshot confirms that the Nexvion Docker image is published in Docker Hub with tags `1.0` and `1.1`. These images were used for container testing and the Kubernetes rolling update and rollback exercise.
 
@@ -630,19 +630,19 @@ This screenshot confirms that the Nexvion Docker image is published in Docker Hu
 ![Nexvion Docker Hub Image Tags](screenshots/docker-hub-image.png)
 
 
-### 7. Trivy Docker Image Vulnerability Scan:
+### 8. Trivy Docker Image Vulnerability Scan:
 
 This screenshot shows the Trivy vulnerability scanning step running as part of the GitHub Actions CI workflow. The scan step completed successfully as part of the overall build job.
 
 ![Trivy Scan Step](screenshots/trivy-scan-results.png)
 
-### 8. Kubernetes Deployment and Rollout History:
+### 9. Kubernetes Deployment and Rollout History:
 
 This screenshot shows the Nexvion Kubernetes Deployment with three replicas ready and the rollout revision history. The current application image is `amithasri16/nexvion-website:1.0` following the rollback test.
 
 ![Kubernetes Rollout History](screenshots/kubernetes-rollout-history.png)
 
-### 9. Kubernetes Rollback:
+### 10. Kubernetes Rollback:
 
 A Kubernetes rollback was performed to revert the Nexvion Deployment to its previous revision. The rollout status and replica readiness were checked after the operation.
 
@@ -654,7 +654,7 @@ Kubernetes self-healing was tested by deleting one application Pod. The Deployme
 
 ![Kubernetes Self-Healing](screenshots/kubernetes-self-healing.png)
 
-### 11. Nexvion Website Running:
+### 12. Nexvion Website Running:
 
 The Nexvion e-commerce demo website is served using Nginx inside a Docker container. The screenshot shows the website successfully displayed in a browser at `http://localhost:8090`.
 
