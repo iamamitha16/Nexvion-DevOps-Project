@@ -583,6 +583,13 @@ The following checks were completed during the project:
 The following screenshots document the implementation and verification of the Nexvion DevOps project.
 
 | No. | Screenshot | Evidence |
+
+### 1. Docker Container Running
+
+This screenshot shows the Nexvion Docker container and its status.
+
+![Docker Container Running](screenshots/docker-running.png)
+
 |---|---|---|
 | 1 | Nexvion Website | Website running successfully in the browser |
 | 2 | Docker Build | Successful Docker image build |
