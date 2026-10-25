@@ -1,10 +1,10 @@
 # Nexvion – DevOps Project
 
-## 1. Project Overview:
+## 1. Project Overview
 
 Nexvion is a frontend e-commerce demo website containerized using Docker and Nginx. This project demonstrates a DevOps workflow using Git, GitHub, Docker, Docker Compose, GitHub Actions, Trivy, Docker Hub, Kubernetes, and Minikube.
 
-The project includes automated Docker image building, container image security scanning, Docker Hub image publishing, Kubernetes deployment, service exposure, and replica scaling.
+The project includes automated Docker image building, container image security scanning, Docker Hub image publishing, Kubernetes deployment, service exposure, replica scaling, health checks, self-healing, rolling updates, and rollback.
 
 **GitHub Repository:**  
 https://github.com/iamamitha16/Nexvion-DevOps-Project
@@ -12,7 +12,7 @@ https://github.com/iamamitha16/Nexvion-DevOps-Project
 **Docker Hub Repository:**  
 https://hub.docker.com/r/amithasri16/nexvion-website
 
-## 2. Project Objectives:
+## 2. Project Objectives
 
 - Containerize the Nexvion website using Docker.
 - Serve the website using Nginx.
@@ -23,8 +23,12 @@ https://hub.docker.com/r/amithasri16/nexvion-website
 - Deploy the application to a local Kubernetes cluster using Minikube.
 - Expose the application through a Kubernetes Service.
 - Scale the deployment from two replicas to three replicas.
+- Configure readiness and liveness probes.
+- Configure container CPU and memory requests and limits.
+- Demonstrate Kubernetes self-healing by deleting a managed Pod.
+- Perform a rolling update and roll back to a previous image version.
 
-## 3. Technologies Used:
+## 3. Technologies Used
 
 | Technology | Purpose |
 |---|---|
@@ -43,44 +47,44 @@ https://hub.docker.com/r/amithasri16/nexvion-website
 | Minikube | Local Kubernetes cluster |
 | kubectl | Kubernetes command-line management |
 
-## 4. Project Architecture:
+## 4. Project Architecture
 
 ```text
 Developer
-    |
-    v
+   |
+   v
 Git and GitHub
-    |
-    v
+   |
+   v
 GitHub Actions CI Workflow
-    |
-    +--> Validate Website Files
-    |
-    +--> Build Docker Image
-    |
-    +--> Scan Image Using Trivy
-    |
-    v
+   |
+   +--> Validate Website Files
+   |
+   +--> Build Docker Image
+   |
+   +--> Scan Image Using Trivy
+   |
+   v
 Docker Hub
-    |
-    v
+   |
+   v
 Kubernetes / Minikube
-    |
-    v
+   |
+   v
 Nexvion Deployment
-    |
-    +--> Replica Pod 1
-    +--> Replica Pod 2
-    +--> Replica Pod 3 (after scaling)
-    |
-    v
+   |
+   +--> Replica Pod 1
+   +--> Replica Pod 2
+   +--> Replica Pod 3
+   |
+   v
 Kubernetes NodePort Service
-    |
-    v
+   |
+   v
 Nexvion Website
 ```
 
-## 5. Project Structure:
+## 5. Project Structure
 
 ```text
 Nexvion/
@@ -104,11 +108,11 @@ Nexvion/
 └── logo.png
 ```
 
-## 6. Docker Containerization:
+## 6. Docker Containerization
 
 The Nexvion website is packaged into a Docker image. Nginx serves the static website files inside the container.
 
-### Build the Docker image
+### 6.1 Build the Docker image
 
 Run the following command from the project directory:
 
@@ -116,7 +120,9 @@ Run the following command from the project directory:
 docker build -t nexvion-website:1.0 .
 ```
 
-### Run the local Docker image
+### 6.2 Run the local Docker image
+
+If port `8090` is available and the container name is not already in use, run:
 
 ```bash
 docker run -d --name nexvion-test -p 8090:80 nexvion-website:1.0
@@ -128,13 +134,15 @@ http://localhost:8090
 
 **Port mapping:** Host port `8090` maps to container port `80`.
 
-### Verify the container
+### 6.3 Verify the container
 
 ```bash
 docker ps
 ```
 
-### Docker Compose
+This command lists running Docker containers.
+
+### 6.4 Docker Compose
 
 Start the website using Docker Compose:
 
@@ -158,32 +166,32 @@ Stop the Compose application when needed:
 docker compose down
 ```
 
-**Note:** If the Nexvion container is already using port `8090`, use the existing container instead of starting another container with the same port.
+**Note:** The project uses port `8090` for the local Docker website. If the existing Nexvion container is already using that port, use the running container instead of starting another container with the same port.
 
-## 7. Docker Hub Image Publishing:
+## 7. Docker Hub Image Publishing
 
 The Docker image was published to Docker Hub.
 
-**Image name:** `amithasri16/nexvion-website:1.0`
+**Docker image:** `amithasri16/nexvion-website:1.0`
 
 **Docker Hub URL:**  
 https://hub.docker.com/r/amithasri16/nexvion-website
 
-### Pull the published image
+### 7.1 Pull the published image
 
 ```bash
 docker pull amithasri16/nexvion-website:1.0
 ```
 
-### Run the published image on port 8090
+### 7.2 Run the published image on port 8090
 
-If port `8090` is free, run:
+If port `8090` is available and the container name is not already in use, run:
 
 ```bash
 docker run -d --name nexvion-hub-test -p 8090:80 amithasri16/nexvion-website:1.0
 ```
 
-Open:
+Open the website:
 
 http://localhost:8090
 
@@ -195,7 +203,7 @@ docker ps
 
 The host port `8090` forwards traffic to port `80` inside the container, where Nginx serves the website.
 
-## 8. GitHub Actions CI Pipeline:
+## 8. GitHub Actions CI Pipeline
 
 The GitHub Actions workflow is stored in:
 
@@ -203,30 +211,32 @@ The GitHub Actions workflow is stored in:
 
 The workflow runs when changes are pushed to or a pull request targets the `main` branch. It can also be started manually.
 
-### Pipeline stages
+### 8.1 Pipeline stages
 
 1. Check out the repository source code.
 2. Verify that the required website files exist.
 3. Build the Docker image.
 4. Scan the image using Trivy.
 
-### Required website file validation
+### 8.2 Required website file validation
 
 The workflow checks for the presence of the main HTML, CSS, JavaScript, and image files before building the Docker image.
 
-### Docker image build
+### 8.3 Docker image build
 
 GitHub Actions builds the Docker image to verify that the application can be packaged successfully.
 
-### Trivy security scanning
+### 8.4 Trivy security scanning
 
-Trivy scans the image for operating-system package and library vulnerabilities.
+Trivy scans the image for vulnerabilities in operating-system packages and application libraries.
 
-The workflow is configured to report CRITICAL, HIGH, and MEDIUM severity findings.
+The workflow is configured to report `CRITICAL`, `HIGH`, and `MEDIUM` severity findings.
 
 The current setting `exit-code: '0'` means detected vulnerabilities alone do not cause the workflow to fail. A successful workflow run does not prove that the image is free of vulnerabilities.
 
-## 9. Kubernetes Deployment Using Minikube:
+**Verification:** The GitHub Actions workflow completed successfully, including the Docker build and Trivy scanning steps.
+
+## 9. Kubernetes Deployment Using Minikube
 
 Nexvion is deployed locally to Kubernetes using Minikube and the Docker Hub image.
 
@@ -234,7 +244,7 @@ Nexvion is deployed locally to Kubernetes using Minikube and the Docker Hub imag
 
 `amithasri16/nexvion-website:1.0`
 
-### 9.1 Start Minikube:
+### 9.1 Start Minikube
 
 Ensure Docker Desktop is running, then execute:
 
@@ -242,15 +252,15 @@ Ensure Docker Desktop is running, then execute:
 minikube start --driver=docker
 ```
 
-### 9.2 Verify the Kubernetes cluster:
+### 9.2 Verify the Kubernetes cluster
 
-Check the node:
+Check the cluster nodes:
 
 ```bash
 kubectl get nodes
 ```
 
-Check all pods:
+Check Pods across all namespaces:
 
 ```bash
 kubectl get pods -A
@@ -258,18 +268,18 @@ kubectl get pods -A
 
 The Minikube node should display `Ready`.
 
-### 9.3 Kubernetes deployment configuration:
+### 9.3 Kubernetes deployment configuration
 
 The Kubernetes configuration is stored in:
 
 `deployment.yaml`
 
-The deployment configuration defines:
+The Deployment configuration defines:
 
-- Deployment name: `nexvion-deployment`
-- Container image: `amithasri16/nexvion-website:1.0`
-- Container port: `80`
-- Initial replicas: `2`
+- **Deployment name:** `nexvion-deployment`
+- **Container image:** `amithasri16/nexvion-website:1.0`
+- **Container port:** `80`
+- **Initial replicas:** `2`
 
 Apply the configuration:
 
@@ -277,21 +287,21 @@ Apply the configuration:
 kubectl apply -f deployment.yaml
 ```
 
-### 9.4 Verify the deployment:
+### 9.4 Verify the Deployment
 
 ```bash
 kubectl get deployments
 ```
 
-Check the application pods:
+Check the application Pods:
 
 ```bash
 kubectl get pods
 ```
 
-The initial deployment was verified with two replicas in `Running` and ready status.
+The initial Deployment was verified with two replicas in `Running` and ready status.
 
-### 9.5 Scale the application:
+### 9.5 Scale the application
 
 Increase the number of replicas from two to three:
 
@@ -299,95 +309,117 @@ Increase the number of replicas from two to three:
 kubectl scale deployment nexvion-deployment --replicas=3
 ```
 
-Verify the deployment:
+Verify the Deployment:
 
 ```bash
 kubectl get deployments
 ```
 
-Verify the pods:
+Verify the Pods:
 
 ```bash
 kubectl get pods
 ```
 
-The deployment was verified with three ready replicas.
+The Deployment was verified with three ready replicas.
 
-**Purpose of scaling:** Kubernetes maintains the requested number of application replicas, helping distribute traffic across available pods and improving application availability.
+**Purpose of scaling:** Kubernetes maintains the requested number of application replicas, helping maintain availability and distribute requests through the Service.
 
+## 10. Kubernetes Health Checks and Resource Management
 
+The Nexvion Kubernetes Deployment includes readiness and liveness probes to monitor the website container.
 
-### Kubernetes Health Checks and Resource Management:
+### 10.1 Readiness probe
 
-The Nexvion Kubernetes deployment includes readiness and liveness probes to monitor the website container.
+The readiness probe sends an HTTP request to `/` on port `80` after an initial delay of five seconds and checks every ten seconds.
 
-**Readiness Probe:** Sends an HTTP request to `/` on port 80 every 10 seconds after an initial delay of 5 seconds. It helps Kubernetes determine whether the pod is ready to receive traffic.
+It helps Kubernetes determine whether the Pod is ready to receive traffic.
 
-**Liveness Probe:** Sends an HTTP request to `/` on port 80 every 20 seconds after an initial delay of 15 seconds. Repeated probe failures can cause Kubernetes to restart the container.
+### 10.2 Liveness probe
 
-**Container Resource Requests and Limits:**
+The liveness probe sends an HTTP request to `/` on port `80` after an initial delay of fifteen seconds and checks every twenty seconds.
+
+Repeated liveness probe failures can cause Kubernetes to restart the container.
+
+### 10.3 Container resource requests and limits
 
 | Resource | Request | Limit |
 |---|---:|---:|
 | CPU | 50m | 250m |
 | Memory | 32Mi | 128Mi |
 
-These settings provide baseline resource requests and limits for the static website container.
+These settings define baseline resource requests and limits for the static website container.
 
-To inspect the deployment configuration and health-check settings, run:
+### 10.4 Inspect the configuration
+
+To inspect the Deployment configuration and health-check settings:
 
 ```bash
 kubectl describe deployment nexvion-deployment
 ```
 
-To verify the deployment rollout, run:
+To verify the Deployment rollout:
 
 ```bash
 kubectl rollout status deployment/nexvion-deployment
 ```
 
-To check pod readiness and status, run:
+To check Pod readiness and status:
 
 ```bash
 kubectl get pods
 ```
 
+## 11. Kubernetes Self-Healing Verification
 
-### Kubernetes Self-Healing Verification
+Kubernetes self-healing was tested by manually deleting one Pod managed by the `nexvion-deployment` Deployment.
 
-Kubernetes self-healing was tested by manually deleting one pod managed by the `nexvion-deployment` Deployment.
+### 11.1 Delete a managed Pod
 
-Command used:
+The command used was:
 
 ```bash
 kubectl delete pod nexvion-deployment-88b7bcb76-55r4v
 ```
 
-Kubernetes automatically created a replacement pod to maintain the desired replica count of three.
+This deletes the specified Pod, not the entire Deployment.
 
-The replacement pod initially showed `0/1` while starting and subsequently reached `1/1 Running`. The other two pods continued running.
+### 11.2 Verify the replacement Pod
 
-This test demonstrated that the Kubernetes Deployment controller maintains the desired number of replicas when a managed pod is deleted.
+```bash
+kubectl get pods -w
+```
 
-Verification commands:
+The Deployment controller detected that a Pod had been deleted and created a replacement to maintain the desired replica count of three.
+
+The replacement Pod initially showed `0/1` while starting and subsequently reached `1/1 Running`. The other two Pods continued running.
+
+Press `Ctrl+C` to stop watching the Pods. This does not delete them.
+
+**Result:** The self-healing test demonstrated that Kubernetes automatically replaces a deleted Pod managed by a Deployment to maintain the desired replica count.
+
+Additional verification commands:
 
 ```bash
 kubectl get deployments
 kubectl get pods
 ```
 
+## 12. Kubernetes Service and Website Access
 
-## 10. Kubernetes Service and Website Access:
+A Kubernetes NodePort Service was created to expose the Nexvion Deployment.
 
-A Kubernetes NodePort Service was created to expose the Nexvion deployment.
-
-### Create the Service
+### 12.1 Create the Service
 
 ```bash
 kubectl expose deployment nexvion-deployment --type=NodePort --port=80
 ```
 
-### Verify the Service
+This creates a Service that routes traffic to the application Pods selected by the Deployment.
+
+If the Service already exists, Kubernetes may report that it already exists. Do not create a duplicate.
+
+### 12.2 Verify the Service
 
 ```bash
 kubectl get services
@@ -395,7 +427,7 @@ kubectl get services
 
 The Service was created with a dynamically assigned NodePort.
 
-### Open the Nexvion website
+### 12.3 Open the Nexvion website
 
 Run:
 
@@ -407,43 +439,117 @@ Minikube displays a local URL and may open the default browser automatically.
 
 Keep the terminal running while using the local service tunnel. The URL may use a temporary localhost port and can change when the tunnel is restarted.
 
-The Nexvion website was opened successfully through the Minikube Service URL.
+**Result:** The Nexvion website was opened successfully through the Minikube Service URL.
 
-**Important:** Port `8090` is used for the local Docker website. The Kubernetes website is accessed through the URL provided by `minikube service nexvion-deployment`; these are separate access methods.
+**Important:** Port `8090` is used for the local Docker website. Kubernetes website access uses the URL provided by `minikube service nexvion-deployment`. These are separate access methods.
 
-## 11. Useful Kubernetes Commands:
+## 13. Useful Kubernetes Commands
 
 | Command | Purpose |
 |---|---|
 | `kubectl get nodes` | View cluster nodes |
-| `kubectl get pods` | View application pods |
-| `kubectl get pods -A` | View pods across all namespaces |
-| `kubectl get deployments` | View deployments and replica status |
+| `kubectl get pods` | View application Pods |
+| `kubectl get pods -A` | View Pods across all namespaces |
+| `kubectl get deployments` | View Deployments and replica status |
 | `kubectl get services` | View Kubernetes Services |
-| `kubectl describe deployment nexvion-deployment` | Inspect deployment details |
+| `kubectl describe deployment nexvion-deployment` | Inspect Deployment details |
 | `kubectl logs deployment/nexvion-deployment` | View application container logs |
-| `kubectl scale deployment nexvion-deployment --replicas=3` | Scale the deployment to three replicas |
+| `kubectl rollout status deployment/nexvion-deployment` | Check rollout status |
+| `kubectl rollout history deployment/nexvion-deployment` | View Deployment revisions |
+| `kubectl scale deployment nexvion-deployment --replicas=3` | Scale the Deployment to three replicas |
 
-## 12. Testing and Verification:
+## 14. Kubernetes Rolling Update and Rollback
+
+This exercise demonstrates how Kubernetes can update an application to a new image version and restore a previous version.
+
+### 14.1 Rolling update
+
+The Docker image was tagged as version `1.1` and pushed to Docker Hub.
+
+```bash
+docker tag amithasri16/nexvion-website:1.0 amithasri16/nexvion-website:1.1
+docker push amithasri16/nexvion-website:1.1
+```
+
+Update the Kubernetes Deployment to use image version `1.1`:
+
+```bash
+kubectl set image deployment/nexvion-deployment nexvion=amithasri16/nexvion-website:1.1
+```
+
+Check the rollout:
+
+```bash
+kubectl rollout status deployment/nexvion-deployment
+```
+
+Verify the image and replicas:
+
+```bash
+kubectl get deployment nexvion-deployment -o wide
+kubectl get pods
+```
+
+**Result:** The rolling update completed successfully, and all three replicas became ready.
+
+### 14.2 Rollback
+
+A rollback was performed to restore the previous Deployment revision.
+
+Run:
+
+```bash
+kubectl rollout undo deployment/nexvion-deployment
+```
+
+Check the rollback:
+
+```bash
+kubectl rollout status deployment/nexvion-deployment
+```
+
+Verify the Deployment image and Pods:
+
+```bash
+kubectl get deployment nexvion-deployment -o wide
+kubectl get pods
+```
+
+Check the Deployment history:
+
+```bash
+kubectl rollout history deployment/nexvion-deployment
+```
+
+**Result:** The rollback completed successfully. The Deployment returned to image version `1.0`, and all three Pods were running and ready.
+
+**Note:** Versions `1.0` and `1.1` contain the same website content. This exercise demonstrated Kubernetes versioned deployment and rollback mechanics.
+
+## 15. Testing and Verification
 
 The following checks were completed during the project:
 
 - Built the Nexvion Docker image successfully.
 - Ran the website using Docker.
 - Verified local Docker access through port `8090`.
+- Started the website using Docker Compose.
 - Published the image to Docker Hub.
 - Pulled the published Docker Hub image.
 - Executed the GitHub Actions Docker build and Trivy scanning workflow successfully.
 - Started the Minikube cluster.
 - Verified that the Kubernetes node was `Ready`.
 - Deployed Nexvion with two replicas.
-- Verified that both application pods were `Running` and ready.
+- Verified that the application Pods were `Running` and ready.
 - Created a Kubernetes NodePort Service.
-- Opened the website through the Minikube service URL.
-- Scaled the deployment to three replicas.
+- Opened the website through the Minikube Service URL.
+- Scaled the Deployment to three replicas.
 - Verified that all three replicas were ready.
+- Tested Kubernetes self-healing by deleting a managed Pod and verifying its replacement.
+- Verified the readiness and liveness probes and CPU and memory resource settings.
+- Performed a rolling update from image version `1.0` to `1.1`.
+- Rolled back to image version `1.0` and verified three ready replicas.
 
-## 13. Project Limitations:
+## 16. Project Limitations
 
 Nexvion is a frontend e-commerce demonstration website.
 
@@ -453,23 +559,22 @@ Do not use this demo to collect real passwords or payment details.
 
 The current Trivy workflow reports vulnerability findings but does not fail solely because vulnerabilities are detected.
 
-The Kubernetes deployment is local to Minikube and is not a production cloud deployment.
+The Kubernetes deployment runs locally on Minikube and is not a production cloud deployment.
 
-## 14. Future Enhancements:
+## 17. Future Enhancements
 
 - Add automated application tests to the CI pipeline.
 - Configure the pipeline to fail when selected critical vulnerabilities are found.
 - Automate Docker image publishing through GitHub Actions.
-- Add Kubernetes readiness and liveness probes.
-- Configure CPU and memory requests and limits.
-- Deploy the application to a managed Kubernetes service.
 - Add monitoring, logging, and application metrics.
+- Deploy the application to a managed Kubernetes service.
 - Introduce a backend and database for a production-style application.
+- Improve security practices and image maintenance.
 
-## 15. Conclusion:
+## 18. Conclusion
 
 This project demonstrates a DevOps workflow for the Nexvion e-commerce demo website using Git, GitHub, Docker, Nginx, Docker Compose, GitHub Actions, Trivy, Docker Hub, Kubernetes, and Minikube.
 
-The project covers containerization, automated image building, security scanning, image publishing, Kubernetes deployment, Service exposure, and scaling an application from two replicas to three.
+The project covers containerization, automated image building, security scanning, image publishing, Kubernetes deployment, Service exposure, replica scaling, health checks, self-healing, rolling updates, and rollback.
 
-It provides practical experience with important DevOps tools and workflows.
+It provides practical experience with important DevOps tools and workflows, including container management, CI automation, image security scanning, and Kubernetes application lifecycle management.
