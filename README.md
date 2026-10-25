@@ -652,6 +652,19 @@ A Kubernetes rollback was performed to revert the Nexvion Deployment to its prev
 
 ![Kubernetes Rollback](screenshots/kubernetes-rollback.png)
 
+### 10. Kubernetes Self-Healing:
+
+Kubernetes self-healing was tested by deleting one application Pod. The Deployment controller automatically created a replacement Pod to maintain the desired replica count of three.
+
+![Kubernetes Self-Healing](screenshots/kubernetes-self-healing.png)
+
+### 11. Nexvion Website Running:
+
+The Nexvion e-commerce demo website is served using Nginx inside a Docker container. The screenshot shows the website successfully displayed in a browser at `http://localhost:8090`.
+
+![Nexvion Website Running](screenshots/nexvion-website.png)
+
+
 
 ## 16. Project Limitations:
 
