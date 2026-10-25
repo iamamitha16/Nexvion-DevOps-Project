@@ -648,7 +648,7 @@ A Kubernetes rollback was performed to revert the Nexvion Deployment to its prev
 
 ![Kubernetes Rollback](screenshots/kubernetes-rollback.png)
 
-### 10. Kubernetes Self-Healing:
+### 11. Kubernetes Self-Healing:
 
 Kubernetes self-healing was tested by deleting one application Pod. The Deployment controller automatically created a replacement Pod to maintain the desired replica count of three.
 
