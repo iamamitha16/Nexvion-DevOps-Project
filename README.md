@@ -19,12 +19,12 @@ Nexvion is a frontend e-commerce demo website containerized with Docker and serv
 **Application:** Static e-commerce demonstration website  
 **Deployment environment:** Local Kubernetes cluster using Minikube
 
+## Project Links
 
-**GitHub Repository:**  
-https://github.com/iamamitha16/Nexvion-DevOps-Project
-
-**Docker Hub Repository:**  
-https://hub.docker.com/r/amithasri16/nexvion-website
+- **GitHub Repository:** https://github.com/iamamitha16/Nexvion-DevOps-Project
+- **Docker Hub Repository:** https://hub.docker.com/r/amithasri16/nexvion-website
+- **GitHub Actions:** Open the repository and select the **Actions** tab to view workflow runs.
+  
 
 ## 2. Project Objectives:
 
@@ -96,6 +96,20 @@ NodePort Service
    |
    v
 Nexvion Website
+
+
+## Project Workflow
+
+1. **Source Code Management:** Maintained the website source code and project configuration files in GitHub.
+2. **Containerization:** Created a Dockerfile using the Nginx Alpine image to serve the static website.
+3. **Container Management:** Used Docker Compose to build and run the application locally.
+4. **Continuous Integration:** Configured GitHub Actions to validate required files and build the Docker image.
+5. **Security Scanning:** Integrated Trivy into the CI workflow to report image vulnerabilities.
+6. **Image Registry:** Tagged, pushed, and pulled the Docker image using Docker Hub.
+7. **Orchestration:** Deployed the container to Kubernetes using Minikube and a Deployment manifest.
+8. **Service Exposure:** Created a NodePort Service and accessed the website through Minikube.
+9. **Scaling and Health Checks:** Scaled the Deployment to three replicas and configured readiness and liveness probes.
+10. **Resilience and Release Management:** Verified Pod replacement, performed a rolling update, and tested rollback.
 
 
 ## 5. Project Structure:
@@ -563,6 +577,30 @@ The following checks were completed during the project:
 - Performed a rolling update from image version `1.0` to `1.1`.
 - Rolled back to image version `1.0` and verified three ready replicas.
 
+
+## Screenshots and Evidence:
+
+The following screenshots document the implementation and verification of the Nexvion DevOps project.
+
+| No. | Screenshot | Evidence |
+|---|---|---|
+| 1 | Nexvion Website | Website running successfully in the browser |
+| 2 | Docker Build | Successful Docker image build |
+| 3 | Docker Container | Running container and port mapping |
+| 4 | Docker Hub | Published Nexvion image and tags |
+| 5 | GitHub Actions | Successful CI workflow execution |
+| 6 | Trivy Scan | Container image vulnerability scan results |
+| 7 | Kubernetes Pods | Three application Pods running and ready |
+| 8 | Kubernetes Service | NodePort Service details |
+| 9 | Self-Healing | Replacement Pod created after deleting a Pod |
+| 10 | Rolling Update | Successful rollout to image version 1.1 |
+| 11 | Rollback | Successful rollback to image version 1.0 |
+
+*Add your actual screenshots below this table or link to screenshots stored in a repository folder.*
+
+![Docker image build](screenshots/docker-build.png)
+
+
 ## 16. Project Limitations:
 
 Nexvion is a frontend e-commerce demonstration website.
@@ -584,6 +622,24 @@ The Kubernetes deployment runs locally on Minikube and is not a production cloud
 - Deploy the application to a managed Kubernetes service.
 - Introduce a backend and database for a production-style application.
 - Improve security practices and image maintenance.
+
+
+## Key Learnings
+
+Through this project, I gained practical experience in:
+
+- Using Git and GitHub to manage project source code.
+- Writing a Dockerfile and building container images.
+- Running applications with Docker and Docker Compose.
+- Automating build and validation steps using GitHub Actions.
+- Integrating Trivy for container image vulnerability scanning.
+- Publishing and retrieving container images from Docker Hub.
+- Creating Kubernetes Deployments and Services using YAML manifests.
+- Managing replicas, readiness probes, liveness probes, and resource limits.
+- Understanding Kubernetes self-healing through Pod replacement.
+- Performing rolling updates and rollback operations.
+- Troubleshooting container and Kubernetes deployment issues.
+
 
 ## 18. Conclusion:
 
