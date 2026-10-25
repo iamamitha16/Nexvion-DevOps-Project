@@ -632,7 +632,17 @@ This screenshot shows the Nexvion Docker images available locally in Docker Desk
 
 This screenshot shows Docker Desktop with the Nexvion test container running and the Minikube container active. The Nexvion container maps host port 8091 to container port 80.
 
-![Docker Desktop Containers](screenshots/docker-desktop-containers.png)
+![Docker Desktop Containers](screenshots/docker-desktop-containers.png
+
+
+### Docker Hub Repository and Image Tags:
+
+This screenshot confirms that the Nexvion Docker image is published in Docker Hub with tags `1.0` and `1.1`. These images were used for container testing and the Kubernetes rolling update and rollback exercise.
+
+**Docker Hub Repository:** https://hub.docker.com/r/amithasri16/nexvion-website
+
+![Nexvion Docker Hub Image Tags](screenshots/docker-hub-image.png)
+
 
 ### 7. Trivy Docker Image Vulnerability Scan:
 
