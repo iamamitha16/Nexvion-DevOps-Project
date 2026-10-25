@@ -583,20 +583,6 @@ The following checks were completed during the project:
 The following screenshots document the implementation and verification of the Nexvion DevOps project.
 
 | No. | Screenshot | Evidence |
-
-### 1. Docker Container Running:
-
-This screenshot shows the Nexvion Docker container and its status.
-
-![Docker Container Running](screenshots/docker-running.png)
-
-### 2. Kubernetes Pods Running:
-
-This screenshot shows the Kubernetes application Pods and their readiness status.
-
-![Kubernetes Pods Running](screenshots/kubernetes-pods.png)
-
-
 |---|---|---|
 | 1 | Nexvion Website | Website running successfully in the browser |
 | 2 | Docker Build | Successful Docker image build |
@@ -612,7 +598,27 @@ This screenshot shows the Kubernetes application Pods and their readiness status
 
 *Add your actual screenshots below this table or link to screenshots stored in a repository folder.*
 
-![Docker image build](screenshots/docker-build.png)
+### 1. Docker Container Running:
+
+This screenshot shows the Nexvion Docker container and its status.
+
+![Docker Container Running](screenshots/docker-running.png)
+
+### 2. Kubernetes Pods Running:
+
+This screenshot shows the Kubernetes application Pods and their readiness status.
+
+![Kubernetes Pods Running](screenshots/kubernetes-pods.png)
+
+### 3. Kubernetes Service:
+
+This screenshot shows the Kubernetes Service configured to expose the Nexvion application through a NodePort.
+
+![Kubernetes Service](screenshots/kubernetes-service.png)
+
+
+
+
 
 
 ## 16. Project Limitations:
