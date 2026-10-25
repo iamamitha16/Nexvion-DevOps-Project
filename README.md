@@ -584,20 +584,6 @@ The following checks were completed during the project:
 
 The following screenshots document the implementation and verification of the Nexvion DevOps project.
 
-| No. | Screenshot | Evidence |
-|---|---|---|
-| 1 | Nexvion Website | Website running successfully in the browser |
-| 2 | Docker Build | Successful Docker image build |
-| 3 | Docker Container | Running container and port mapping |
-| 4 | Docker Hub | Published Nexvion image and tags |
-| 5 | GitHub Actions | Successful CI workflow execution |
-| 6 | Trivy Scan | Container image vulnerability scan results |
-| 7 | Kubernetes Pods | Three application Pods running and ready |
-| 8 | Kubernetes Service | NodePort Service details |
-| 9 | Self-Healing | Replacement Pod created after deleting a Pod |
-| 10 | Rolling Update | Successful rollout to image version 1.1 |
-| 11 | Rollback | Successful rollback to image version 1.0 |
-
 ### 1. Docker Container Running:
 
 This screenshot shows the Nexvion Docker container and its status.
@@ -632,7 +618,7 @@ This screenshot shows the Nexvion Docker images available locally in Docker Desk
 
 This screenshot shows Docker Desktop with the Nexvion test container running and the Minikube container active. The Nexvion container maps host port 8091 to container port 80.
 
-![Docker Desktop Containers](screenshots/docker-desktop-containers.png
+![Docker Desktop Containers](screenshots/docker-desktop-containers.png)
 
 
 ### Docker Hub Repository and Image Tags:
@@ -692,7 +678,7 @@ The Kubernetes deployment runs locally on Minikube and is not a production cloud
 - Add automated application tests to the CI pipeline.
 - Configure the pipeline to fail when selected critical vulnerabilities are found.
 - Automate Docker image publishing through GitHub Actions.
-- Add monitoring, logging, and application metrics.c
+- Add monitoring, logging, and application metrics.
 - Deploy the application to a managed Kubernetes service.
 - Introduce a backend and database for a production-style application.
 - Improve security practices and image maintenance.
