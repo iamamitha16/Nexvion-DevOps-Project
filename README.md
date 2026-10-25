@@ -315,6 +315,43 @@ The deployment was verified with three ready replicas.
 
 **Purpose of scaling:** Kubernetes maintains the requested number of application replicas, helping distribute traffic across available pods and improving application availability.
 
+
+
+### Kubernetes Health Checks and Resource Management:
+
+The Nexvion Kubernetes deployment includes readiness and liveness probes to monitor the website container.
+
+**Readiness Probe:** Sends an HTTP request to `/` on port 80 every 10 seconds after an initial delay of 5 seconds. It helps Kubernetes determine whether the pod is ready to receive traffic.
+
+**Liveness Probe:** Sends an HTTP request to `/` on port 80 every 20 seconds after an initial delay of 15 seconds. Repeated probe failures can cause Kubernetes to restart the container.
+
+**Container Resource Requests and Limits:**
+
+| Resource | Request | Limit |
+|---|---:|---:|
+| CPU | 50m | 250m |
+| Memory | 32Mi | 128Mi |
+
+These settings provide baseline resource requests and limits for the static website container.
+
+To inspect the deployment configuration and health-check settings, run:
+
+```bash
+kubectl describe deployment nexvion-deployment
+```
+
+To verify the deployment rollout, run:
+
+```bash
+kubectl rollout status deployment/nexvion-deployment
+```
+
+To check pod readiness and status, run:
+
+```bash
+kubectl get pods
+```
+
 ## 10. Kubernetes Service and Website Access:
 
 A Kubernetes NodePort Service was created to expose the Nexvion deployment.
