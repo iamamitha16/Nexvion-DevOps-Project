@@ -584,11 +584,18 @@ The following screenshots document the implementation and verification of the Ne
 
 | No. | Screenshot | Evidence |
 
-### 1. Docker Container Running
+### 1. Docker Container Running:
 
 This screenshot shows the Nexvion Docker container and its status.
 
 ![Docker Container Running](screenshots/docker-running.png)
+
+### 2. Kubernetes Pods Running:
+
+This screenshot shows the Kubernetes application Pods and their readiness status.
+
+![Kubernetes Pods Running](screenshots/kubernetes-pods.png)
+
 
 |---|---|---|
 | 1 | Nexvion Website | Website running successfully in the browser |
